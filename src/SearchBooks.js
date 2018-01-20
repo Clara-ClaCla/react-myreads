@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 
 class SearchBooks extends React.Component {
   state = {
-    query: "",
     queryBooks: [],
     title: ""
   }
@@ -16,27 +15,34 @@ class SearchBooks extends React.Component {
     }
   }
 
-  updateQuery(event) {
-    let query = event.target.value
-    BooksAPI.search(query).then((books) => {
-      if (!books.error) {
-        this.setState({
-          queryBooks: books,
-          title: "Results"
-        })
-      } else {
-      this.setState({
-        queryBooks: [],
-        title: ""
-        })
-      }})
+  updateQuery(query) {
+    if (query === "") {
+      this.resetResult()
+    } else {
+      BooksAPI.search(query).then((books) => {
+        if (!books.error) {
+          this.setState({
+            queryBooks: books,
+            title: "Results"
+          })
+        } else {
+          this.resetResult()
+        }
+      })
     }
+  }
+
+  resetResult() {
+    this.setState({
+      queryBooks: [],
+      title: ""
+    })
+  }
 
   render() {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          {/* <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a> */}
           <Link className="close-search" to="/" />
           <div className="search-books-input-wrapper">
             {/*
@@ -50,7 +56,7 @@ class SearchBooks extends React.Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              onChange={(event) => this.updateQuery(event)}
+              onChange={(event) => this.updateQuery(event.target.value)}
             />
           </div>
         </div>
