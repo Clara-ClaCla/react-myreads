@@ -1,9 +1,6 @@
 import React from 'react'
 
 class Book extends React.Component {
-  state = {
-    imageWidth: 128,
-  }
 
   handleSelectedOption(event) {
     console.log("handleSelectedOption")
@@ -23,8 +20,8 @@ class Book extends React.Component {
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={{
-            width: this.state.imageWidth,
-            height:192,
+            width: 128,
+            height: "100%",
             backgroundImage:  imageURL }}>
           </div>
           <div className="book-shelf-changer">
