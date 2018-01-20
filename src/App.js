@@ -1,6 +1,7 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import Bookshelf from './Bookshelf'
+import SearchBooks from './SearchBooks'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -28,31 +29,32 @@ class BooksApp extends React.Component {
     })
   }
 
+  updateBook(book, newShelf) {
+    console.log("updateBook")
+    BooksAPI.update(book, newShelf).then(results => {
+      console.log(results)
+      const oldBookList = book.shelf + "Books"
+      const newBookList = newShelf + "Books"
+      var updatedBook = book
+      book.shelf = newShelf
+      console.log(oldBookList);
+      this.setState(state => ({
+        //remove
+        [oldBookList]: state[oldBookList].filter((b) => b.id !== book.id),
+        // add
+        [newBookList]: state[newBookList].concat(book)
+      }))
+    })
+  }
+
 
   render() {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
+          <SearchBooks
+            onChangeBookshelf={(book, newShelf) => this.updateBook(book, newShelf)}
+          />
         ) : (
           <div className="list-books">
             <div className="list-books-title">
@@ -60,9 +62,18 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <Bookshelf title="Currently Reading" books={this.state.currentlyReadingBooks} onChangeBookshelf={""}/>
-                <Bookshelf title="Want to Read" books={this.state.wantToReadBooks} onChangeBookshelf={""}/>
-                <Bookshelf title="Read" books={this.state.readBooks} onChangeBookshelf={""}/>
+                <Bookshelf
+                  title="Currently Reading"
+                  books={this.state.currentlyReadingBooks}
+                  onChangeBookshelf={(book,newShelf) => this.updateBook(book, newShelf)}/>
+                <Bookshelf
+                  title="Want to Read"
+                  books={this.state.wantToReadBooks}
+                  onChangeBookshelf={(book,newShelf) => this.updateBook(book, newShelf)}/>
+                <Bookshelf
+                  title="Read"
+                  books={this.state.readBooks}
+                  onChangeBookshelf={(book,newShelf) => this.updateBook(book, newShelf)}/>
               </div>
             </div>
             <div className="open-search">
