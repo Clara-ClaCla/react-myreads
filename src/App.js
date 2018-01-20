@@ -33,18 +33,49 @@ class BooksApp extends React.Component {
     console.log("updateBook")
     BooksAPI.update(book, newShelf).then(results => {
       console.log(results)
-      const oldBookList = book.shelf + "Books"
-      const newBookList = newShelf + "Books"
-      var updatedBook = book
-      book.shelf = newShelf
-      console.log(oldBookList);
-      this.setState(state => ({
-        //remove
-        [oldBookList]: state[oldBookList].filter((b) => b.id !== book.id),
-        // add
-        [newBookList]: state[newBookList].concat(book)
-      }))
+      console.log("book.shelf= " + book.shelf)
+      console.log("newShelf= " + newShelf)
+
+      if (newShelf === "none") {
+        this.deleteBookFromList(book, newShelf)
+      } else if (!book.shelf) {
+        this.addBookToList(book, newShelf)
+      }else {
+        this.moveBook(book, newShelf)
+      }
     })
+  }
+
+  moveBook(book, newShelf) {
+    const oldBookList = book.shelf + "Books"
+    const newBookList = newShelf + "Books"
+    var updatedBook = book
+    book.shelf = newShelf
+    console.log(oldBookList);
+    this.setState(state => ({
+      //remove
+      [oldBookList]: state[oldBookList].filter((b) => b.id !== book.id),
+      // add
+      [newBookList]: state[newBookList].concat(updatedBook)
+    }))
+  }
+
+  deleteBookFromList(book, newShelf) {
+    const oldBookList = book.shelf + "Books"
+    this.setState(state => ({
+      //remove
+      [oldBookList]: state[oldBookList].filter((b) => b.id !== book.id),
+    }))
+  }
+
+  addBookToList(book, newShelf) {
+    const newBookList = newShelf + "Books"
+    var updatedBook = book
+    book.shelf = newShelf
+    this.setState(state => ({
+      // add
+      [newBookList]: state[newBookList].concat(updatedBook)
+    }))
   }
 
 
