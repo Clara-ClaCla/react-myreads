@@ -1,11 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class Book extends React.Component {
+  static propTypes = {
+    book: PropTypes.object.isRequired,
+    onChangeBookshelf: PropTypes.func.isRequired
+  }
 
   handleSelectedOption(event) {
-    console.log("handleSelectedOption")
-    console.log("event.target.value")
-    console.log(event.target.value)
     this.props.onChangeBookshelf(event.target.value)
   }
 
