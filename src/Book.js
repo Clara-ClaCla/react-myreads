@@ -13,7 +13,6 @@ class Book extends React.Component {
 
   render() {
     const { book } = this.props
-
     //check if the book has an image
     const imageURL = book.imageLinks ? `url(${book.imageLinks.smallThumbnail})` : ""
     const shelf = book.shelf ? book.shelf : "none"

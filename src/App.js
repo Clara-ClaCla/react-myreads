@@ -8,21 +8,13 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
      currentlyReadingBooks: [],
      wantToReadBooks: [],
      readBooks: [],
-    showSearchPage: false
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      console.log(books)
       this.setState({
         currentlyReadingBooks: books.filter((b) => b.shelf === "currentlyReading"),
         wantToReadBooks: books.filter((b) => b.shelf === "wantToRead"),
@@ -32,11 +24,7 @@ class BooksApp extends React.Component {
   }
 
   updateBook(book, newShelf) {
-    console.log("updateBook")
     BooksAPI.update(book, newShelf).then(results => {
-      console.log(results)
-      console.log("book.shelf= " + book.shelf)
-      console.log("newShelf= " + newShelf)
 
       if (newShelf === "none") {
         this.deleteBookFromList(book, newShelf)
@@ -53,7 +41,6 @@ class BooksApp extends React.Component {
     const newBookList = newShelf + "Books"
     var updatedBook = book
     book.shelf = newShelf
-    console.log(oldBookList);
     this.setState(state => ({
       //remove
       [oldBookList]: state[oldBookList].filter((b) => b.id !== book.id),
@@ -90,14 +77,7 @@ class BooksApp extends React.Component {
             />
           )}
         />
-        {/* {this.state.showSearchPage ? (
-          <SearchBooks
-            onChangeBookshelf={(book, newShelf) => this.updateBook(book, newShelf)}
-          />
-        ) : */}
-         {/* ( */}
-           <Route exact path="/" render={() => (
-
+        <Route exact path="/" render={() => (
 
           <div className="list-books">
             <div className="list-books-title">
@@ -120,14 +100,11 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="open-search">
-              {/* <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a> */}
               <Link to="/search">Add a book</Link>
             </div>
           </div>
           )}
         />
-        {/* ) */}
-      {/* } */}
       </div>
     )
   }

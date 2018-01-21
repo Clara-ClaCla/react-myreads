@@ -10,8 +10,6 @@ class Bookshelf extends React.Component {
   }
 
   handleChangeBookshelf(book, newShelf) {
-    console.log("handleChangeBookshelf")
-    console.log(newShelf)
     if (this.props.onChangeBookshelf) {
       this.props.onChangeBookshelf(book, newShelf)
     }
@@ -39,8 +37,4 @@ class Bookshelf extends React.Component {
 
 }
 
-
-// currentlyReadingBooks: [],
-// wantToReadBooks: [],
-// readBooks: [],
 export default Bookshelf
