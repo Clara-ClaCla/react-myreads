@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 
 class SearchBooks extends React.Component {
   static PropTypes = {
+    bookLists: PropTypes.array.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired
   }
 
@@ -26,6 +27,7 @@ class SearchBooks extends React.Component {
     } else {
       BooksAPI.search(query).then((books) => {
         if (!books.error) {
+          this.checkBookshelf(books)
           this.setState({
             queryBooks: books,
             title: "Results"
@@ -35,6 +37,22 @@ class SearchBooks extends React.Component {
         }
       })
     }
+  }
+
+  checkBookshelf(searchBooks) {
+    //get all the ids from the search results
+    const searchBooksID = searchBooks.map((b) => b.id)
+
+    this.props.bookshelfLists.map((bookshelfList) => (
+      bookshelfList.map((book) => {
+        //if book is already on the Bookshelf
+        //the book from the search results will have the corresponding shelf action
+        if (searchBooksID.includes(book.id)) {
+          const sBook = searchBooks.find((b) => b.id === book.id)
+          sBook.shelf = book.shelf
+        }
+      })
+    ))
   }
 
   resetResult() {

@@ -67,12 +67,14 @@ class BooksApp extends React.Component {
     }))
   }
 
-
   render() {
     return (
       <div className="app">
         <Route path="/search" render={ () => (
           <SearchBooks
+            bookshelfLists = {[this.state.currentlyReadingBooks,
+             this.state.wantToReadBooks,
+             this.state.readBooks]}
             onChangeBookshelf={(book, newShelf) => this.updateBook(book, newShelf)}
             />
           )}
