@@ -43,8 +43,8 @@ class SearchBooks extends React.Component {
     //get all the ids from the search results
     const searchBooksID = searchBooks.map((b) => b.id)
 
-    this.props.bookshelfLists.map((bookshelfList) => (
-      bookshelfList.map((book) => {
+    this.props.bookshelfLists.forEach((bookshelfList) => (
+      bookshelfList.forEach((book) => {
         //if book is already on the Bookshelf
         //the book from the search results will have the corresponding shelf action
         if (searchBooksID.includes(book.id)) {
